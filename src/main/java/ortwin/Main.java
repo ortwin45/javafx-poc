@@ -1,24 +1,30 @@
 package ortwin;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import nu.pattern.OpenCV;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Slf4j
 public class Main extends Application {
 
     public static void main(String[] args) {
+        OpenCV.loadShared();
         launch(args);
     }
 
@@ -26,23 +32,19 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello World!");
 
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(event -> System.out.println("Hello World!"));
-
-        Label label = new Label("Drag a file to me.");
-        Label dropped = new Label("");
         Image image = new Image("file:" + "/home/ortwin/temp/mountain.png");
         ImageView imageView = new ImageView();
-        imageView.setX(10);
         imageView.setY(10);
-        imageView.setFitWidth(575);
-        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(200);
         imageView.setImage(image);
 
+        ImageView updatedImageView = new ImageView();
+        updatedImageView.setY(300);
+        updatedImageView.setFitHeight(200);
+        updatedImageView.setImage(image);
+
         VBox dragTarget = new VBox();
-        dragTarget.getChildren().add(label);
-        dragTarget.getChildren().add(dropped);
+        dragTarget.getChildren().add(imageView);
         dragTarget.setOnDragOver(event -> {
             if (event.getGestureSource() != dragTarget
                     && event.getDragboard().hasFiles()) {
@@ -55,9 +57,12 @@ public class Main extends Application {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasFiles()) {
-                dropped.setText(db.getFiles().toString());
-                Image newImage = new Image("file:" + db.getFiles().get(0).toString());
+                String fileUri = db.getFiles().get(0).toString();
+                Image newImage = new Image("file:" + fileUri);
                 imageView.setImage(newImage);
+                var openCvImage = getOpenCvImage(fileUri);
+                updatedImageView.setImage(openCvImage);
+
                 success = true;
             }
             /* let the source know whether the string was successfully
@@ -67,13 +72,33 @@ public class Main extends Application {
         });
 
 
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        Group root = new Group();
         root.getChildren().add(dragTarget);
-        root.getChildren().add(imageView);
+        //root.getChildren().add(imageView);
+        root.getChildren().add(updatedImageView);
 
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
+    }
+
+
+    private Image getOpenCvImage(String fileUri) {
+        return loadImage(fileUri);
+    }
+
+    @SneakyThrows
+    private Image loadImage(String fileUri) {
+        //Reading the Image from the file and storing it in to a Matrix object
+        Mat image = Imgcodecs.imread(fileUri);
+        Core.bitwise_not(image, image);
+        //Encoding the image
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".png", image, matOfByte);
+        //Storing the encoded Mat in a byte array
+        byte[] byteArray = matOfByte.toArray();
+        //Displaying the image
+        InputStream in = new ByteArrayInputStream(byteArray);
+        Image fxImage = new Image(in);
+        return fxImage;
     }
 }
