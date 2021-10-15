@@ -1,7 +1,6 @@
 module javafx-poc {
     requires javafx.fxml;
     requires javafx.controls;
-    opens my.project to javafx.graphics;
-    exports my.project;
-}
+    opens javafx-poc to javafx.graphics;
+    exports javafx-poc;
 }
