@@ -1,6 +1,9 @@
-module javafx-poc {
-    requires javafx.fxml;
+module hellofx {
     requires javafx.controls;
-    opens javafx-poc to javafx.graphics;
-    exports javafx-poc;
+    requires javafx.fxml;
+    requires lombok;
+    requires org.slf4j;
+
+    opens ortwin to javafx.fxml;
+    exports ortwin;
 }
