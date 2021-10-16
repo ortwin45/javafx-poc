@@ -24,6 +24,7 @@ import java.io.InputStream;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        log.info("Starting...");
         OpenCV.loadShared();
         launch(args);
     }
@@ -32,7 +33,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Hello World!");
 
-        Image image = new Image("file:" + "/home/ortwin/temp/mountain.png");
+        Image image = new Image(getClass().getResource("/images/mountain.png").toString());
+        if (image.getException() != null) {
+            log.warn("Cannot load image: {}", image.getException().toString());
+        }
         ImageView imageView = new ImageView();
         imageView.setY(10);
         imageView.setFitHeight(200);
@@ -98,7 +102,6 @@ public class Main extends Application {
         byte[] byteArray = matOfByte.toArray();
         //Displaying the image
         InputStream in = new ByteArrayInputStream(byteArray);
-        Image fxImage = new Image(in);
-        return fxImage;
+        return new Image(in);
     }
 }
