@@ -13,7 +13,7 @@
         <javafx.version>16</javafx.version>
         <lombok.version>1.18.22</lombok.version>
         <opencv.version>4.5.1-2</opencv.version>
-        <slf4j.version>1.7.32</slf4j.version>
+        <slf4j.version>1.8.0-beta4</slf4j.version>
     </properties>
 
     <dependencies>
@@ -142,18 +142,8 @@
                                         <name>javafx.controls</name>
                                     </moduleInfo>
                                 </module>
-                                <module>
-                                    <artifact>
-                                        <groupId>org.slf4j</groupId>
-                                        <artifactId>slf4j-api</artifactId>
-                                    </artifact>
-                                    <moduleInfo>
-                                        <name>org.slf4j</name>
-                                    </moduleInfo>
-                                </module>
                             </modules>
                             <overwriteExistingFiles>true</overwriteExistingFiles>
-                            <jdepsExtraArgs>--ignore-missing-deps</jdepsExtraArgs>
                         </configuration>
                     </execution>
                 </executions>
