@@ -98,7 +98,6 @@
                     <mainClass>ortwin.Main</mainClass>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.moditect</groupId>
                 <artifactId>moditect-maven-plugin</artifactId>
