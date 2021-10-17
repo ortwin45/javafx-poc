@@ -12,6 +12,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <javafx.version>16</javafx.version>
         <lombok.version>1.18.22</lombok.version>
+        <opencv.version>4.5.1-2</opencv.version>
+        <slf4j.version>1.7.32</slf4j.version>
     </properties>
 
     <dependencies>
@@ -26,6 +28,11 @@
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -33,17 +40,17 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.6</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openpnp</groupId>
             <artifactId>opencv</artifactId>
-            <version>4.5.1-2</version>
+            <version>${opencv.version}</version>
         </dependency>
     </dependencies>
 
@@ -59,10 +66,29 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.22</version>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/modules
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -71,6 +97,66 @@
                 <configuration>
                     <mainClass>ortwin.Main</mainClass>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.RC2</version>
+                <executions>
+                    <execution>
+                        <id>add-module-info</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/modules
+                            </outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.openpnp</groupId>
+                                        <artifactId>opencv</artifactId>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>opencv</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.openjfx</groupId>
+                                        <artifactId>javafx-fxml</artifactId>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>javafx.fxml</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.openjfx</groupId>
+                                        <artifactId>javafx-controls</artifactId>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>javafx.controls</name>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.slf4j</groupId>
+                                        <artifactId>slf4j-api</artifactId>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>org.slf4j</name>
+                                    </moduleInfo>
+                                </module>
+                            </modules>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                            <jdepsExtraArgs>--ignore-missing-deps</jdepsExtraArgs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
