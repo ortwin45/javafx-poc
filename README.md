@@ -16,4 +16,7 @@ jpackage --runtime-image target/jlink-image/ --module hellofx/ortwin.Main
 cd target/jlink-image/bin
 ./helloFxApp
 ````
-
+````
+cd /opt/main/bin
+./Main
+````
