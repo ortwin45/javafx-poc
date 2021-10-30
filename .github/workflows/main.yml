@@ -79,22 +79,11 @@ jobs:
       # END: This is a copy from the job above
 
 
-      - name: pwd
-        run: pwd
-        shell: bash
-
-      - name: chmod
-        run: chmod +x package_win.sh
-        shell: bash
-
-      - name: ls
-        run: ls -la
-        shell: bash
-
-      - name: cat
-        run: cat ./package_win.sh
-        shell: bash
 
       - name: JLink and JPackage for windows
-        run: package_win.sh
+        run: package_win.bat
         shell: cmd
+
+      - name: dir
+        run: dir
+        shell: bash
