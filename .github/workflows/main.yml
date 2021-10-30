@@ -53,6 +53,19 @@ jobs:
         run: ./package_osx.sh
         shell: bash
 
+      - name: ls modules
+        run: ls ./target/mac
+        shell: bash
+
+      - name: Update Automatic Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN}}"
+          automatic_release_tag: "macOS-latest"
+          prerelease: true
+          title: "macOS Development Build"
+          files: ./target/mac/*.dmg
+
 #  package_windows:
 #    runs-on: windows-latest
 #    needs: [build_and_test]
