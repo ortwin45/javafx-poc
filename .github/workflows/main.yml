@@ -84,6 +84,11 @@ jobs:
         shell: bash
 
 
+      - name: chmod
+        run: chmod +x package_win.sh
+        shell: bash
+
+
       - name: ls
         run: ls -la
         shell: bash
@@ -91,4 +96,8 @@ jobs:
 
       - name: JLink and JPackage for windows
         run: echo ${{ github.action_path }}/package_win.sh
+        shell: bash
+
+      - name: JLink and JPackage for windows
+        run: ${{ github.action_path }}/package_win.sh
         shell: bash
