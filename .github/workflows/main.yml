@@ -80,5 +80,5 @@ jobs:
 
 
       - name: JLink and JPackage for windows
-        run: ${{ github.action_path }}/.github/workflows/package_win.sh
+        run: ${{ github.action_path }}/package_win.sh
         shell: bash
