@@ -97,4 +97,4 @@ jobs:
 
       - name: JLink and JPackage for windows
         run: ./package_win.sh
-        shell: bash
+        shell: cmd
