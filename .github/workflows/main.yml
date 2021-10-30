@@ -94,10 +94,10 @@ jobs:
         shell: bash
 
 
-      - name: JLink and JPackage for windows
-        run: echo ${{ github.action_path }}/package_win.sh
+      - name: cat
+        run: cat ./package_win.sh
         shell: bash
 
       - name: JLink and JPackage for windows
-        run: ${{ github.action_path }}/package_win.sh
+        run: ./package_win.sh
         shell: bash
