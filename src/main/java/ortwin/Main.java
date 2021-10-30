@@ -38,12 +38,12 @@ public class Main extends Application {
             log.warn("Cannot load image: {}", image.getException().toString());
         }
         ImageView imageView = new ImageView();
-        imageView.setY(10);
+        imageView.setY(100);
         imageView.setFitHeight(200);
         imageView.setImage(image);
 
         ImageView updatedImageView = new ImageView();
-        updatedImageView.setY(300);
+        updatedImageView.setY(400);
         updatedImageView.setFitHeight(200);
         updatedImageView.setImage(image);
 
@@ -62,6 +62,7 @@ public class Main extends Application {
             boolean success = false;
             if (db.hasFiles()) {
                 String fileUri = db.getFiles().get(0).toString();
+                log.info("Dragging file uri: {}", fileUri);
                 Image newImage = new Image("file:" + fileUri);
                 imageView.setImage(newImage);
                 var openCvImage = getOpenCvImage(fileUri);
