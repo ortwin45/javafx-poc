@@ -54,26 +54,9 @@ jobs:
         run: chmod +x package_win.sh
         shell: bash
 
-      - name: Package linux
+      - name: Package windows
         run: ./package_win.sh
         shell: bash
-
-      - name: testing testing
-        run: ls ./target/win
-        shell: bash
-
-
-      - name: testing testing
-        run: ls
-        shell: bash
-      - name: testing testing
-        run: ls ./target/modules
-        shell: bash
-      - name: testing testing
-        run: dir
-        shell: bash
-
-
 
       - name: Update Automatic Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -82,8 +65,7 @@ jobs:
           automatic_release_tag: "Windows-latest"
           prerelease: true
           title: "Windows Development Build"
-          files: ./target/windows/*.msi
-
+          files: ./target/win/*.exe
 
   build_ubuntu:
     if: ${{ false }}  # disable for now
